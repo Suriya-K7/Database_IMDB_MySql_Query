@@ -7,20 +7,21 @@ create database IMDB;
 USE IMDB;
 
 -- creating table for movie
-CREATE TABLE movie(
-	movie_id INT NOT NULL AUTO_INCREMENT,
-	movie_title VARCHAR(255) NOT NULL,
-	release_year INT NOT NULL,
-	PRIMARY KEY(movie_id)
+CREATE TABLE movie (
+    movie_id INT NOT NULL AUTO_INCREMENT,
+    movie_title VARCHAR(255) NOT NULL,
+    release_year INT NOT NULL,
+    PRIMARY KEY (movie_id)
 );
 
 -- creating table for media's
 CREATE TABLE media (
-	media_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	movie_id INT NOT NULL,
-	media_type VARCHAR(255) NOT NULL,
-	media_url VARCHAR(255) NOT NULL,
-	FOREIGN KEY (movie_id) REFERENCES movie(movie_id)
+    media_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    movie_id INT NOT NULL,
+    media_type VARCHAR(255) NOT NULL,
+    media_url VARCHAR(255) NOT NULL,
+    FOREIGN KEY (movie_id)
+        REFERENCES movie (movie_id)
 );
 
 -- loading movie data's
@@ -49,9 +50,15 @@ INSERT INTO media (media_id,movie_id,media_type,media_url) VALUES
 
 --     
 -- viewing movie and media data with join functions
-SELECT movie.movie_id,movie.movie_title,movie.release_year,media.media_url from
-	movie INNER JOIN media
-	on movie.movie_id=media.movie_id;
+SELECT 
+    movie.movie_id,
+    movie.movie_title,
+    movie.release_year,
+    media.media_url
+FROM
+    movie
+        INNER JOIN
+    media ON movie.movie_id = media.movie_id;
 --   
 
 -- creating table for genre's
@@ -112,10 +119,17 @@ INSERT INTO movie_genre (movie_genre_id,movie_id,genre_id) VALUES
 
 --     
 -- viewing movie and genre data with join functions
-SELECT movie.movie_id,movie.movie_title,movie.release_year,genre.genre_name 
-FROM movie
-INNER JOIN movie_genre on movie.movie_id=movie_genre.movie_id
-INNER JOIN genre on genre.genre_id=movie_genre.genre_id;
+SELECT 
+    movie.movie_id,
+    movie.movie_title,
+    movie.release_year,
+    genre.genre_name
+FROM
+    movie
+        INNER JOIN
+    movie_genre ON movie.movie_id = movie_genre.movie_id
+        INNER JOIN
+    genre ON genre.genre_id = movie_genre.genre_id;
 --
 
 -- creating table for user
@@ -161,10 +175,17 @@ INSERT INTO review (review_id,movie_id,user_id,review_text,review_rating) VALUES
 
 --   
 -- viewing movie and review data with join functions
-SELECT movie.movie_title, review.review_text as review, review.review_rating as rating, user.username
-FROM movie
-INNER JOIN review on movie.movie_id=review.movie_id
-INNER JOIN user on user.user_id=review.user_id;
+SELECT 
+    movie.movie_title,
+    review.review_text AS review,
+    review.review_rating AS rating,
+    user.username
+FROM
+    movie
+        INNER JOIN
+    review ON movie.movie_id = review.movie_id
+        INNER JOIN
+    user ON user.user_id = review.user_id;
 --
 
 -- creating table for artist
@@ -235,12 +256,15 @@ INSERT INTO artist_skill (artist_id,skill_id,movie_id) VALUES
 (6,1,1);
 
 --   
--- viewing movie and artist skill data with join functions
-SELECT movie.movie_title,artist.artist_name as artist ,skill.skill_name as skill
-FROM movie
-INNER JOIN artist_skill on movie.movie_id=artist_skill.movie_id
-INNER JOIN artist on artist.artist_id=movie.movie_id
-INNER JOIN skill on skill.skill_id=artist_skill.skill_id;
+-- viewing artist skill data with join functions
+SELECT 
+    artist.artist_name AS artist, skill.skill_name AS skill
+FROM
+    artist_skill
+        INNER JOIN
+    artist ON artist.artist_id = artist_skill.artist_id
+        INNER JOIN
+    skill ON skill.skill_id = artist_skill.skill_id;
 --
 
 -- Create table for role
@@ -287,9 +311,16 @@ INSERT INTO artist_role (artist_id,movie_id,role_id) VALUES
 
 --   
 -- viewing movie and artist role data with join functions
-SELECT movie.movie_title,artist.artist_name as artist ,role.role_name as role
-FROM movie
-INNER JOIN artist_role on movie.movie_id=artist_role.movie_id
-INNER JOIN artist on artist.artist_id=movie.movie_id
-INNER JOIN role on role.role_id=artist_role.role_id;
+SELECT 
+    movie.movie_title,
+    artist.artist_name AS artist,
+    role.role_name AS role
+FROM
+    movie
+        INNER JOIN
+    artist_role ON movie.movie_id = artist_role.movie_id
+        INNER JOIN
+    artist ON artist.artist_id = movie.movie_id
+        INNER JOIN
+    role ON role.role_id = artist_role.role_id;
 --
